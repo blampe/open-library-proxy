@@ -1,5 +1,4 @@
 import * as mongo from '../mongo'
-import download from './download'
 import ingestMeili from './meili'
 import ingestMongo from './mongo'
 import c from 'ansi-colors'
@@ -11,8 +10,6 @@ export default async function ingest(forceRebuild: boolean = false) {
   }
   console.log(c.bold('Starting OpenLibrary ingest...'))
   if (forceRebuild) console.warn('Force rebuild is enabled')
-
-  await download()
 
   console.log(c.bold('Ingesting into MongoDB'))
   await ingestMongo()
