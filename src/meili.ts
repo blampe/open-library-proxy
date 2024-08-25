@@ -2,7 +2,7 @@ import { MeiliSearch } from 'meilisearch'
 import type { MeiliWork } from './types'
 
 console.log('Connecting to MeiliSearch...')
-const client = new MeiliSearch({ host: 'localhost:7700' })
+const client = new MeiliSearch({ host: 'localhost:7700', apiKey: process.env.MEILI_MASTER_KEY })
 while (!(await client.isHealthy())) {
   await new Promise((resolve) => setTimeout(resolve, 1000))
 }
