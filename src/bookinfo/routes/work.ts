@@ -13,6 +13,6 @@ export default async function work(id: string): Promise<Response> {
   const primaryAuthor = work.authors![0]
   return new Response(null, {
     status: 302,
-    headers: { Location: `/bookinfo/v1/author/${idToForeignId(primaryAuthor)}` },
+    headers: { Location: `/v1/author/${idToForeignId(primaryAuthor)}` },
   })
 }

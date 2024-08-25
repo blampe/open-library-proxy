@@ -14,7 +14,6 @@ const server = Bun.serve({
     console.log('Incoming request:', req.url)
 
     const router = AutoRouter({
-      base: '/bookinfo/v1',
       catch(err) {
         if (!(err instanceof FejlError)) console.error(err)
         const message = err instanceof FejlError ? err.message : 'Internal Server Error'
@@ -23,11 +22,16 @@ const server = Bun.serve({
       },
     })
 
-    router.get('/author/:id', ({ params: { id } }) => bookInfoAuthor(id))
-    router.get('/edition/:id', ({ params: { id } }) => bookInfoEdition(id))
-    router.get('/work/:id', ({ params: { id } }) => bookInfoWork(id))
-    router.get('/search', ({ query }) => bookInfoSearch(Array.isArray(query.q) ? query.q[0] : query.q ?? ''))
-    router.post('/book/bulk', (req) => req.json().then(bookInfoBulk))
+    router.get('/v1/author/:id', ({ params: { id } }) => bookInfoAuthor(id))
+    router.get('/v1/edition/:id', ({ params: { id } }) => bookInfoEdition(id))
+    router.get('/v1/work/:id', ({ params: { id } }) => bookInfoWork(id))
+    router.get('/v1/search', ({ query }) =>
+      bookInfoSearch(Array.isArray(query.q) ? query.q[0] : query.q ?? '')
+    )
+    router.get('/book/auto_complete', ({ query }) =>
+      bookInfoSearch(Array.isArray(query.q) ? query.q[0] : query.q ?? '')
+    )
+    router.post('/v1/book/bulk', (req) => req.json().then(bookInfoBulk))
 
     return router.fetch(req)
   },
