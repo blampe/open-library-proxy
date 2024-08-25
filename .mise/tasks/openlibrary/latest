@@ -1,0 +1,15 @@
+#!/bin/bash
+# mise dir='{{cwd}}/data'
+# mise sources=['*']
+# mise outputs=['latest']
+
+curl --head --silent "$OLP_DUMP_SOURCE" | grep location > .latest
+
+if ! diff latest .latest ; then
+    # Newer version.
+    mv .latest latest
+else
+    # Already current.
+    rm .latest
+fi
+

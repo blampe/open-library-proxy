@@ -1,0 +1,7 @@
+#!/bin/bash
+# mise dir='{{cwd}}/data'
+# mise sources = ['dump.tsv.gz', 'ratings.tsv.gz']
+# mise outputs = ['dump.tsv', 'ratings.tsv']
+
+gunzip --keep dump.tsv.gz
+gunzip --keep ratings.tsv.gz

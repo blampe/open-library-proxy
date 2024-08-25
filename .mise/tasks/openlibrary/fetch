@@ -1,0 +1,14 @@
+#!/bin/bash
+# mise dir='{{cwd}}/data'
+# mise sources=['latest']
+# mise outputs=['dump.tsv.gz', 'ratings.tsv.gz']
+
+if diff current latest ; then
+    # Already current.
+    exit 0
+fi
+
+curl -L "$OLP_DUMP_SOURCE" > dump.tsv.gz
+curl -L "$OLP_RATINGS_SOURCE" > ratings.tsv.gz
+
+curl --head --silent "$OLP_DUMP_SOURCE" | grep location > "$OLP_BUILD"/current

@@ -1,0 +1,11 @@
+[tools]
+bun = "1.1.26"
+
+[env]
+MEILI_MASTER_KEY = 'fake-key-only-used-for-development'
+OLP_DUMP_SOURCE = 'https://openlibrary.org/data/ol_dump_latest.txt.gz'
+OLP_RATINGS_SOURCE = 'https://openlibrary.org/data/ol_dump_ratings_latest.txt.gz'
+OLP_FORCE_REBUILD = 'false'
+
+[settings]
+experimental = true # enable mise tasks

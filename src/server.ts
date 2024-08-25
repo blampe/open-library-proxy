@@ -7,7 +7,7 @@ import bookInfoSearch from './bookinfo/routes/search'
 import bookInfoBulk from './bookinfo/routes/bulk'
 import ingest from './ingest/ingest'
 
-await ingest(process.env.FORCE_REBUILD === 'true')
+await ingest(process.env.OLP_FORCE_REBUILD === 'true')
 
 const server = Bun.serve({
   async fetch(req) {
