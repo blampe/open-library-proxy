@@ -10,4 +10,18 @@ console.log('Connected to MeiliSearch')
 
 const works = client.index<MeiliWork>('works')
 
+// Set order in which attributes are preferred during search. Do this first so
+// we don't bother indexing unsearchable fields during ingestion.
+await works.updateSearchableAttributes(['id', 'title', 'authors', 'series', 'subtitle'])
+await works.updateSortableAttributes(['reviewCount', 'authorRatingCount'])
+await works.updateRankingRules([
+  'words',
+  'typo',
+  'proximity',
+  'attribute',
+  'sort',
+  'ratingCount:desc',
+  'authorRatingCount:desc',
+])
+
 export { client, works }

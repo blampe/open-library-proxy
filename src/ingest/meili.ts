@@ -17,13 +17,14 @@ export default async function ingestMeili() {
     total: await mongo.works.estimatedDocumentCount(),
   })
 
+  // TODO: Denormalize this upfront.
   const worksWithAuthors = mongo.works.aggregate<AggregateWork>(
     [
       { $match: {} },
       { $lookup: { from: 'authors', localField: 'authors', foreignField: '_id', as: 'authors' } },
       { $lookup: { from: 'editions', localField: '_id', foreignField: 'works', as: 'editions' } },
     ],
-    { batchSize: 10_000 },
+    { batchSize: 10_000 }
   )
 
   let worksToAdd: MeiliWork[] = []
@@ -35,7 +36,7 @@ export default async function ingestMeili() {
       authors: work.authors?.map((author) => author.name),
       subjects: work.subjects ?? [],
       series: Array.from(
-        new Set(work.editions.flatMap((edition) => edition.series ?? []).map((series) => series.name)),
+        new Set(work.editions.flatMap((edition) => edition.series ?? []).map((series) => series.name))
       ),
       editionCount: work.editions.length,
       ratingCount: work.ratingCount ?? 0,
@@ -65,17 +66,4 @@ export default async function ingestMeili() {
   // Flush remaining
   await meili.works.addDocuments(worksToAdd)
   progress.update(1)
-
-  // Set order in which attributes are preferred during search
-  await meili.works.updateSearchableAttributes(['title', 'authors', 'series', 'subtitle'])
-  await meili.works.updateSortableAttributes(['reviewCount', 'authorRatingCount'])
-  await meili.works.updateRankingRules([
-    'words',
-    'typo',
-    'proximity',
-    'attribute',
-    'sort',
-    'ratingCount:desc',
-    'authorRatingCount:desc',
-  ])
 }
