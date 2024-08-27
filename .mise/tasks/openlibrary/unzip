@@ -1,7 +1,8 @@
 #!/bin/bash
-# mise dir='{{cwd}}/data'
-# mise sources = ['dump.tsv.gz', 'ratings.tsv.gz']
-# mise outputs = ['dump.tsv', 'ratings.tsv']
+# mise dir='{{cwd}}/data/{{get_env(name="OLP_ENV")}}'
+# mise sources=['dump.tsv.gz', 'ratings.tsv.gz']
+# mise outputs=['dump.tsv', 'ratings.tsv']
+# mise description="Unzip the dump."
 
 gunzip --keep dump.tsv.gz
 gunzip --keep ratings.tsv.gz

@@ -1,0 +1,9 @@
+# This file provides overrides for `.mise.toml` that are applied when running
+# `mise` with the environment variable `MISE_ENV=prod`.
+
+[env]
+OLP_ENV = 'prod'
+OLP_DUMP_SOURCE = 'https://openlibrary.org/data/ol_dump_latest.txt.gz'
+
+# This file is decrypted with git-crypt.
+MEILI_MASTER_KEY = '{{exec(command="cat .key")}}'

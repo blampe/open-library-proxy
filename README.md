@@ -21,7 +21,7 @@ For example:
 echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
 ```
 
-Install dependencies:
+Install tool dependencies:
 
 ```sh
 mise install
@@ -34,7 +34,7 @@ Grab the OpenLibrary dump:
 > This initial dump and ingest will take quite a while.
 
 ```sh
-mise run openlibrary:*
+MISE_ENV=prod mise run openlibrary:*
 ```
 
 This command will no-op if you already have the latest bulk export.
@@ -44,3 +44,7 @@ Start MongoDB, Meilisearch, and the app:
 ```sh
 mise run serve:*
 ```
+
+This will ingest a small subset of the total dump to speed up local development.
+Running this command with `MISE_ENV=prod` will ingest the fill corpus, but it will take much longer to ingest.
+These environments use different Docker volumes, so it's safe to switch between them locally.

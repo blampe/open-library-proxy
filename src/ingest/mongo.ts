@@ -11,11 +11,15 @@ export default async function ingestMongo() {
   await mongo.ratings.drop()
 
   // Ingest data to MongoDB
-  console.log('Processing dump...')
-  await processFileByLine('./data/dump.tsv', migrator.process, migrator.flush)
+  console.log(`Processing dump for ${process.env.OLP_ENV} environment...`)
+  await processFileByLine(`./data/${process.env.OLP_ENV}/dump.tsv`, migrator.process, migrator.flush)
 
   console.log('Processing ratings...')
-  await processFileByLine('./data/ratings.tsv', migrator.processRatings, migrator.flushRatings)
+  await processFileByLine(
+    `./data/${process.env.OLP_ENV}/ratings.tsv`,
+    migrator.processRatings,
+    migrator.flushRatings
+  )
 
   // Create indices
   console.log('Creating indices for editions...')
@@ -29,15 +33,16 @@ export default async function ingestMongo() {
 async function processFileByLine(
   file: string,
   process: (line: string) => Promise<void>,
-  flush?: () => Promise<void>,
+  flush?: () => Promise<void>
 ) {
+  const f = Bun.file(file)
+  const fileStream = f.stream()
   const progress = new ProgressBar(':bar :rate/dps :percent :etas', {
     complete: '=',
     incomplete: '-',
-    // total: Number(execSync(`wc -l ${file}`).toString().split(' ')[0]),
-    total: file.endsWith('ratings.tsv') ? 486_748 : 101_594_893,
+    // Estimate progress based on filesize / average line size in bytes.
+    total: file.endsWith('ratings.tsv') ? f.size / 48 : f.size / 775,
   })
-  const fileStream = Bun.file(file).stream()
   const decoder = new TextDecoder()
 
   // Process lines

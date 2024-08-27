@@ -1,7 +1,8 @@
 #!/bin/bash
-# mise dir='{{cwd}}/data'
+# mise dir='{{cwd}}/data/{{get_env(name="OLP_ENV")}}'
 # mise sources=['*']
 # mise outputs=['latest']
+# mise description="Determine the most recent dump available."
 
 curl --head --silent "$OLP_DUMP_SOURCE" | grep location > .latest
 

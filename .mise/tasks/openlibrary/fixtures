@@ -1,0 +1,24 @@
+#!/bin/bash
+# mise dir='{{cwd}}/data/dev'
+# mise sources=['../prod/dump.tsv', '../prod/ratings.tsv']
+# mise outputs=['dump.tsv', 'ratings.tsv']
+# mise description="Generate a trimmed corpus appropriate for local testing."
+
+if [ "$OLP_ENV" -eq "dev" ]; then
+    exit 0
+fi
+
+echo "Generating fixtures for local development, this will take a moment..."
+
+# Grab 1M random entities (~1% of the total)
+shuf --random-source=<(yes 42) -n 1000000 ../prod/dump.tsv > dump.tsv
+
+# Zip it to give curl a target.
+gzip --keep -f dump.tsv
+
+# Grab all the ratings since there aren't that many.
+cp ../prod/ratings.tsv* .
+
+
+# Update timestamps.
+cp ../prod/{latest,current} .

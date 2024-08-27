@@ -1,11 +1,16 @@
+# This is the default configuration for development. It will ingest only a
+# small subset of works. Use `MISE_ENV=prod` to ingest the full dump.
+
 [tools]
 bun = "1.1.26"
 
 [env]
-MEILI_MASTER_KEY = 'fake-key-only-used-for-development'
-OLP_DUMP_SOURCE = 'https://openlibrary.org/data/ol_dump_latest.txt.gz'
+OLP_ENV = 'dev'
+OLP_DUMP_SOURCE = 'file://{{cwd}}/data/dev/dump.tsv.gz'
 OLP_RATINGS_SOURCE = 'https://openlibrary.org/data/ol_dump_ratings_latest.txt.gz'
 OLP_FORCE_REBUILD = 'false'
+
+MEILI_MASTER_KEY = 'fake-key-only-used-for-development'
 
 [settings]
 experimental = true # enable mise tasks

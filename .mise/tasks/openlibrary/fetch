@@ -1,7 +1,8 @@
 #!/bin/bash
-# mise dir='{{cwd}}/data'
+# mise dir='{{cwd}}/data/{{get_env(name="OLP_ENV")}}'
 # mise sources=['latest']
 # mise outputs=['dump.tsv.gz', 'ratings.tsv.gz']
+# mise description="Fetch a dump if one doesn't exist or if a newer one is available."
 
 if diff current latest ; then
     # Already current.
